@@ -12,7 +12,7 @@ import ru.job4j.auth.service.PersonService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/v1/person")
 @AllArgsConstructor
 public class PersonController {
 
@@ -35,14 +35,13 @@ public class PersonController {
     @PostMapping("/")
     public ResponseEntity<Person> create(@RequestBody Person person) {
         return new ResponseEntity<Person>(
-               personService.save(person),
-                HttpStatus.CREATED
+               personService.save(person), HttpStatus.CREATED
         );
     }
 
-    @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Person person) {
-        personService.update(person);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable("id") int id, @RequestBody Person person) {
+        personService.update(id, person);
         return ResponseEntity.ok().build();
     }
 

@@ -26,25 +26,24 @@ public class PersonService {
     }
 
     public Optional<Person> getById(int personId) {
-    return personRepository.findById(personId);
+        return personRepository.findById(personId);
     }
 
-    public boolean update(Person person) {
-        boolean result = false;
-        Person findPerson = personRepository.findById(person.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Person is not exists"));
-                if (!person.equals(findPerson)) {
-                    findPerson.setPassword(person.getPassword());
-                    personRepository.save(findPerson);
-                    return !result;
-                }
-                return result;
-    }
-
-    public boolean delete(int id) {
+    public Person update(int id, Person person) {
         Person findPerson = personRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Person is not exists"));
-      personRepository.delete(findPerson);
-      return true;
+                .orElseThrow(() -> new EntityNotFoundException("Person with id: " + id + " is not exists"));
+        if (!person.equals(findPerson)) {
+            findPerson.setPassword(person.getPassword());
+            personRepository.save(findPerson);
+        }
+        return findPerson;
+    }
+
+    public void delete(int id) {
+        try {
+            personRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Person with id: " + id + " is not exists");
+        }
     }
 }
