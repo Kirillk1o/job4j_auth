@@ -1,6 +1,7 @@
 package ru.job4j.auth.service;
 
 import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import ru.job4j.auth.domain.Person;
@@ -14,7 +15,6 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class PersonService {
-
     private final PersonRepository personRepository;
 
     public Person save(Person person) {
@@ -36,6 +36,7 @@ public class PersonService {
             personRepository.save(findPerson);
         return findPerson;
     }
+
 
     public void delete(int id) {
         if (!personRepository.existsById(id)) {
