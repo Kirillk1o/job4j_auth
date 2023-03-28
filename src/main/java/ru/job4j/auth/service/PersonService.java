@@ -37,7 +37,6 @@ public class PersonService {
         return findPerson;
     }
 
-
     public void delete(int id) {
         if (!personRepository.existsById(id)) {
             throw new EntityNotFoundException("Person with id: " + id + " does not exist");
