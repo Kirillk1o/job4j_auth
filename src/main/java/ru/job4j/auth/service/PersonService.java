@@ -32,18 +32,15 @@ public class PersonService {
     public Person update(int id, Person person) {
         Person findPerson = personRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Person with id: " + id + " is not exists"));
-        if (!person.equals(findPerson)) {
             findPerson.setPassword(person.getPassword());
             personRepository.save(findPerson);
-        }
         return findPerson;
     }
 
     public void delete(int id) {
-        try {
-            personRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new EntityNotFoundException("Person with id: " + id + " is not exists");
+        if (!personRepository.existsById(id)) {
+            throw new EntityNotFoundException("Person with id: " + id + " does not exist");
         }
+        personRepository.deleteById(id);
     }
 }
