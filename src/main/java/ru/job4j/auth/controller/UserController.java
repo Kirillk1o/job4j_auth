@@ -1,6 +1,7 @@
 package ru.job4j.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +18,9 @@ public class UserController {
     private final BCryptPasswordEncoder encoder;
 
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody Person person) {
+    public Person signUp(@RequestBody Person person) {
         person.setPassword(encoder.encode(person.getPassword()));
-        personService.save(person);
+      return personService.save(person);
     }
 
     @GetMapping("/all")
