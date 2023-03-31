@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/sign-up")
     public Person signUp(@RequestBody Person person) {
         if (person.getUsername() == null || person.getPassword() == null) {
-            throw new IllegalArgumentException("Username and password are required. ");
+            throw new IllegalArgumentException("Username and password are required.");
         } else if (person.getPassword().length() < 6) {
             throw new IllegalArgumentException("Invalid password. Password length must be more than 5 characters.");
         } else if (!isValidUsername(person.getUsername())) {
