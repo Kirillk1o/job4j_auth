@@ -2,6 +2,7 @@ package ru.job4j.auth.service;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import ru.job4j.auth.domain.Person;
