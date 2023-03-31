@@ -38,6 +38,10 @@ public class PersonService {
         return findPerson;
     }
 
+    public Optional<Person> findByName(String username) {
+       return Optional.ofNullable(personRepository.findByUsername(username));
+    }
+
     public void delete(int id) {
         if (!personRepository.existsById(id)) {
             throw new EntityNotFoundException("Person with id: " + id + " does not exist");
