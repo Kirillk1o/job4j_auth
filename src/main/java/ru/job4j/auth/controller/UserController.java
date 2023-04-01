@@ -34,9 +34,11 @@ public class UserController {
     public Person signUp(@RequestBody Person person) {
         if (person.getUsername() == null || person.getPassword() == null) {
             throw new IllegalArgumentException("Username and password are required.");
-        } else if (person.getPassword().length() < 6) {
+        }
+        if (person.getPassword().length() < 6) {
             throw new IllegalArgumentException("Invalid password. Password length must be more than 5 characters.");
-        } else if (!isValidUsername(person.getUsername())) {
+        }
+        if (!isValidUsername(person.getUsername())) {
             throw new IllegalArgumentException("Invalid username. Username must contain only letters, numbers, and underscores.");
         }
         person.setPassword(encoder.encode(person.getPassword()));
