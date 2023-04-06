@@ -31,13 +31,6 @@ public class PersonController {
         ));
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Person> create(@RequestBody Person person) {
-        return new ResponseEntity<Person>(
-               personService.save(person), HttpStatus.CREATED
-        );
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable("id") int id, @RequestBody Person person) {
         personService.update(id, person);

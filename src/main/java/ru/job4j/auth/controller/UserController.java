@@ -51,6 +51,7 @@ public class UserController {
         return entity;
     }
 
+
     private boolean isValidUsername(String username) {
         String pattern = "^[a-zA-Z0-9_]*$";
         return username.matches(pattern);
