@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +33,7 @@ public class UserController {
     private final BCryptPasswordEncoder encoder;
 
     @PostMapping("/sign-up")
-    public Person signUp(@RequestBody Person person) {
+    public ResponseEntity<Person> signUp(@RequestBody Person person) {
         if (person.getUsername() == null || person.getPassword() == null) {
             throw new IllegalArgumentException("Username and password are required.");
         }
@@ -42,7 +44,11 @@ public class UserController {
             throw new IllegalArgumentException("Invalid username. Username must contain only letters, numbers, and underscores.");
         }
         person.setPassword(encoder.encode(person.getPassword()));
-        return personService.save(person);
+        var entity = ResponseEntity.status(HttpStatus.CREATED)
+                .header("CustomHeader")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(personService.save(person));
+        return entity;
     }
 
     private boolean isValidUsername(String username) {
@@ -51,8 +57,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<Person> findAll() {
-        return personService.getAll();
+    public ResponseEntity<List<Person>> findAll() {
+        return ResponseEntity.ok(personService.getAll());
     }
 
     @GetMapping
