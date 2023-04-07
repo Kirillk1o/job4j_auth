@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import ru.job4j.auth.domain.Person;
+import ru.job4j.auth.dto.PersonDto;
 import ru.job4j.auth.repository.PersonRepository;
 
 import javax.persistence.EntityNotFoundException;
@@ -30,12 +31,18 @@ public class PersonService {
         return personRepository.findById(personId);
     }
 
-    public Person update(int id, Person person) {
+    public Person updatePersonById(int id, PersonDto personDto) {
         Person findPerson = personRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Person with id: " + id + " is not exists"));
-            findPerson.setPassword(person.getPassword());
+            findPerson.setPassword(personDto.getPassword());
             personRepository.save(findPerson);
         return findPerson;
+    }
+
+    public Person update(Person person) {
+        Person findPerson = personRepository.findById(person.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Person with id: " + person.getId() + " is not exists"));
+      return  personRepository.save(findPerson);
     }
 
     public Optional<Person> findByName(String username) {

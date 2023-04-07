@@ -57,11 +57,6 @@ public class UserController {
         return username.matches(pattern);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Person>> findAll() {
-        return ResponseEntity.ok(personService.getAll());
-    }
-
     @GetMapping
     public Person findByName(@RequestParam String username) {
         return personService.findByName(username).orElseThrow(() -> new ResponseStatusException(
