@@ -1,6 +1,7 @@
 package ru.job4j.auth.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
@@ -9,18 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.web.server.ResponseStatusException;
+
 import ru.job4j.auth.domain.Person;
 import ru.job4j.auth.handler.GlobalExceptionHandler;
 import ru.job4j.auth.service.PersonService;
+import ru.job4j.auth.validation.Operation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -33,10 +36,8 @@ public class UserController {
     private final BCryptPasswordEncoder encoder;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Person> signUp(@RequestBody Person person) {
-        if (person.getUsername() == null || person.getPassword() == null) {
-            throw new IllegalArgumentException("Username and password are required.");
-        }
+    @Validated(Operation.OnCreate.class)
+    public ResponseEntity<Person> signUp(@Valid @RequestBody Person person) {
         if (person.getPassword().length() < 6) {
             throw new IllegalArgumentException("Invalid password. Password length must be more than 5 characters.");
         }
@@ -54,13 +55,6 @@ public class UserController {
     private boolean isValidUsername(String username) {
         String pattern = "^[a-zA-Z0-9_]*$";
         return username.matches(pattern);
-    }
-
-    @GetMapping
-    public Person findByName(@RequestParam String username) {
-        return personService.findByName(username).orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Person is not found. Please, check username."
-        ));
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
