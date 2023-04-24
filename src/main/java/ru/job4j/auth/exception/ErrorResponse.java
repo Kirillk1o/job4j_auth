@@ -9,7 +9,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class ErrorResponse {
+
     private HttpStatus status;
+
     private String message;
+
     private List<ObjectError> errors;
 }
